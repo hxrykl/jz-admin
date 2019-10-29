@@ -34,6 +34,7 @@ export default {
     refreshCategories(state,categorys){
       state.categorys = categorys;
     },
+    // 设置模态框标题的方法
     setTitle(state,title){
       state.title = title;
     }

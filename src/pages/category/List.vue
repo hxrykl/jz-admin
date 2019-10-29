@@ -15,7 +15,12 @@
           <el-button @click="toSearch" size="small" type="primary">搜索</el-button>
         </div>
       </el-col>
-      
+      <el-col :span="4">
+        <div class="grid-content bg-purple">
+          <el-button @click="toAddHandler" size="small" type="primary">添加</el-button>
+          <el-button @click="toSearch" size="small" type="danger">批量删除</el-button>
+        </div>
+      </el-col>
     </el-row>
     <!-- 表格 -->
     <div v-loading="loading">
@@ -36,16 +41,17 @@
       </el-table>
     </div>
     <!-- 模态框 -->
-    <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
+    <!-- 这里的prop作为校验字段名, -->
+    <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
       <el-form ref="categoryForm" :model="category" :rules="rules">
         <el-form-item label="栏目名" label-width="100px" prop="name">
           <el-input v-model="category.name" auto-complete="off" />
         </el-form-item>
-        <el-form-item label="数量" label-width="100px" prop="num">
-          <el-input v-model="category.num" auto-complete="off" />
+        <el-form-item  label="数量" label-width="100px" prop="num">
+          <el-input type="number" v-model.number="category.num" auto-complete="off" />
         </el-form-item>
-        <el-form-item label="父栏目" label-width="100px" prop="parentId">
-          <el-input v-model="category.parentId" auto-complete="off" />
+        <el-form-item  label="父栏目" label-width="100px" prop="parentId">
+          <el-input type="number" v-model.number="category.parentId" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -61,15 +67,22 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      searchInput:'',
       category: {},
       ids: [],
+      // 给模态框里的输入限定条件
       rules: {
-        realname: [
-          { required: true, message: '请输入姓名', trigger: 'blur' },
+        name: [
+          { required: true, message: '请输入栏目名', trigger: 'blur' },
           { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
-        telephone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' }
+        num: [
+          {type:'number', required: true, message: '请输入数量', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ],
+        parentId: [
+          {type:'number', required: true, message: '请输入父栏目', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -96,6 +109,9 @@ export default {
     handleSelectionChange(val) {
       this.ids = val.map(item => item.id)
     },
+    toSearch() {
+
+    },
     toAddHandler() {
       // 1. 重置表单
       this.category = {}
@@ -105,9 +121,11 @@ export default {
     },
     submitHandler() {
       // 校验
+      // $refs去访问已经定义的ref实例，validate是jQuery里的验证方法
       this.$refs.categoryForm.validate((valid) => {
         // 如果校验通过
         if (valid) {
+          // 
           const promise = this.saveOrUpdateCategory(this.category)
           promise.then((response) => {
             // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
@@ -118,11 +136,16 @@ export default {
         }
       })
     },
+    // 定义关闭模态框方法
     dialogCloseHandler() {
+      this.closeModal();
+      // 对该表单项进行重置，将其值重置为初始值并移除校验结果
       this.$refs.categoryForm.resetFields()
     },
+    // 修改方法
     editHandler(row) {
       this.category = row
+      // 设置模态框标题为。。
       this.setTitle('修改栏目信息')
       this.showModal()
     },

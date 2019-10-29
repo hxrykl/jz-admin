@@ -37,13 +37,14 @@
       </el-table>
 		</div>
     <!-- 模态框 -->
+    <!-- 这里的prop作为校验字段名 -->
     <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
       <el-form :model="customer" :rules="rules" ref="customerForm">
         <el-form-item label="姓名" label-width="100px"  prop="realname">
           <el-input v-model="customer.realname" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="手机号" label-width="100px" prop="telephone">
-          <el-input v-model="customer.telephone" auto-complete="off"></el-input>
+          <el-input v-model.number="customer.telephone" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -62,8 +63,10 @@ export default {
   data(){
     return {
       searchInput:"",
+      // 
       customer:{},
       ids:[],
+      // 校验规则
       rules:{
         realname: [
           { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -110,7 +113,7 @@ export default {
     // 定义提交保存方法
     submitHandler(){
       // 校验
-      // $refs去访问已经定义的ref实例
+      // $refs去访问已经定义的ref实例，validate是jQuery里的验证方法
       this.$refs.customerForm.validate((valid)=>{
         // 如果校验通过
         if(valid){
