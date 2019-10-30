@@ -35,7 +35,7 @@
           <template #default="record">
             <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
             <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
-            <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+            <!-- <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a> -->
           </template>
         </el-table-column>
       </el-table>
@@ -53,7 +53,7 @@
           <el-input type="number" v-model.number="category.num" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item  label="父栏目" label-width="100px" prop="parentId">
-          <el-input  v-model="category.parentId" auto-complete="off" />
+          <el-input  v-model.number="category.parentId" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -77,6 +77,7 @@ export default {
       // 给模态框里的输入限定条件
       rules: {
         name: [
+          // trigger是设置触发方式
           { required: true, message: '请输入栏目名', trigger: 'blur' },
           { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
@@ -86,7 +87,7 @@ export default {
         ],
         parentId: [
           { required: true, message: '请输入父栏目', trigger: 'blur' },
-          { min: 2, max: 6, message: '长度在 2 到 6 个字符', trigger: 'blur' }
+          // { min: 2, max: 6, message: '长度在 2 到 6 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -103,15 +104,15 @@ export default {
     // 从category.js里拿异步方法
     ...mapActions('category', ['findAllCategorys', 'saveOrUpdateCategory', 'deleteCategoryById', 'batchDeleteCategory']),
     // 普通方法
-    toDetailsHandler(category) {
-      // 跳转到详情页面
-      // this.$router.push("/categoryDetails")
-      //
-      this.$router.push({
-        path: '/category/details',
-        query: { id: category.id }
-      })
-    },
+    // toDetailsHandler(category) {
+    //   // 跳转到详情页面
+    //   // this.$router.push("/categoryDetails")
+    //   //
+    //   this.$router.push({
+    //     path: '/category/details',
+    //     query: { id: category.id }
+    //   })
+    // },
     handleSelectionChange(val) {
       this.ids = val.map(item => item.id)
     },
