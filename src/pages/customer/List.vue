@@ -13,7 +13,7 @@
             style="display: inline-block;width: 20%;"
             clearable>
           </el-input>
-          <el-button @click="toSearch" size="small" type="primary">搜索</el-button>
+          <!-- <el-button @click="toSearch" size="small" type="primary">搜索</el-button> -->
         </div>
       </el-col>
       
@@ -108,7 +108,7 @@ export default {
       this.showModal();
     },
     toSearch() {
-
+      alert(1);
     },
     // 定义提交保存方法
     submitHandler(){

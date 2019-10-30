@@ -1,7 +1,7 @@
 <template>
   <div class="waiterDetails">
     <h2>员工详情</h2>
-    <el-button size="small" type="text" @click="backHandler">返回</el-button>
+    <el-button size="small"  type="primary" @click="backHandler">返回</el-button>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="info">
         基本信息...

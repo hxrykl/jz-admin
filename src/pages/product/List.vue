@@ -12,7 +12,7 @@
             style="display: inline-block;width: 20%;"
             clearable>
           </el-input>
-          <el-button @click="toSearch" size="small" type="primary">搜索</el-button>
+          <!-- <el-button @click="toSearch" size="small" type="primary">搜索</el-button> -->
         </div>
       </el-col>
     </el-row>
@@ -60,6 +60,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      searchInput:'',
       product: {},
       ids: [],
       rules: {

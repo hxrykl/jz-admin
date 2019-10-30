@@ -48,10 +48,11 @@
           <el-input v-model="category.name" auto-complete="off" />
         </el-form-item>
         <el-form-item  label="数量" label-width="100px" prop="num">
-          <el-input type="number" v-model.number="category.num" auto-complete="off" />
+          <!-- <el-input type="number" v-model.number="category.num" auto-complete="off" /> -->
+          <el-input type="number" v-model.number="category.num" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item  label="父栏目" label-width="100px" prop="parentId">
-          <el-input type="number" v-model.number="category.parentId" auto-complete="off" />
+          <el-input  v-model="category.parentId" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -78,11 +79,11 @@ export default {
         ],
         num: [
           {type:'number', required: true, message: '请输入数量', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+          // { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
         ],
         parentId: [
-          {type:'number', required: true, message: '请输入父栏目', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+          { required: true, message: '请输入父栏目', trigger: 'blur' },
+          { min: 2, max: 6, message: '长度在 2 到 6 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -96,11 +97,13 @@ export default {
   },
   methods: {
     ...mapMutations('category', ['showModal', 'closeModal', 'setTitle']),
+    // 从category.js里拿异步方法
     ...mapActions('category', ['findAllCategorys', 'saveOrUpdateCategory', 'deleteCategoryById', 'batchDeleteCategory']),
     // 普通方法
     toDetailsHandler(category) {
       // 跳转到详情页面
       // this.$router.push("/categoryDetails")
+      //
       this.$router.push({
         path: '/category/details',
         query: { id: category.id }
@@ -119,13 +122,15 @@ export default {
       // 2. 显示模态框
       this.showModal()
     },
+    // 提交保存或修改方法
     submitHandler() {
       // 校验
-      // $refs去访问已经定义的ref实例，validate是jQuery里的验证方法
+      // $refs去访问已经定义的ref实例，
+      //validate是源于jQuery里的验证方法，参数是一个回调函数，回调函数第一个参数为是否校验成功，第二个为校验不通过的对象
       this.$refs.categoryForm.validate((valid) => {
         // 如果校验通过
         if (valid) {
-          // 
+          // 执行异步操作返回一个promise
           const promise = this.saveOrUpdateCategory(this.category)
           promise.then((response) => {
             // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数

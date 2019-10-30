@@ -19,7 +19,7 @@
     </el-row>
     <!-- 表格 -->
     <div v-loading="loading">
-      <el-table :data="waiters" size="mini" @selection-change="handleSelectionChange">
+      <el-table :data="waiters" size="mini" height="400" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="编号" />
         <el-table-column prop="realname" label="姓名" />
@@ -28,12 +28,22 @@
         <el-table-column prop="status" label="状态" />
         <el-table-column label="操作">
           <template #default="record">
-            <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
-            <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+            <!-- <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+            <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp; -->
             <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
           </template>
         </el-table-column>
       </el-table>
+    </div>
+    <!-- 分页 -->
+    <div class="block">
+      <!-- <span class="demonstration">大于 7 页时的效果</span> -->
+      <el-pagination
+        layout="prev, pager, next"
+        :current-page="paging.page+1"
+        :page-size="paging.pageSize"
+        :total="paging.total">
+      </el-pagination>
     </div>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
@@ -61,6 +71,14 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      // 分页
+      paging:{
+        total:5,
+        page:0,
+        pageSize:7
+      },
+      // 搜索输入值
+      searchInput:'',
       waiter: {},
       ids: [],
       rules: {
@@ -95,6 +113,9 @@ export default {
     },
     handleSelectionChange(val) {
       this.ids = val.map(item => item.id)
+    },
+    toSearch() {
+
     },
     toAddHandler() {
       // 1. 重置表单
@@ -144,5 +165,8 @@ export default {
 }
 </script>
 <style scoped>
-
+ .el-pagination {
+   text-align: center;
+ }
+ 
 </style>
