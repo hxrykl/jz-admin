@@ -24,7 +24,7 @@
     </el-row>
     <!-- 表格 -->
     <div v-loading="loading">
-      <el-table :data="categorys" size="mini" @selection-change="handleSelectionChange">
+      <el-table :data="categories" size="mini" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="编号" />
         <el-table-column prop="name" label="栏目" />
@@ -43,11 +43,12 @@
     <!-- 模态框 -->
     <!-- 这里的prop作为校验字段名, -->
     <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
+      {{category}}
       <el-form ref="categoryForm" :model="category" :rules="rules">
         <el-form-item label="栏目名" label-width="100px" prop="name">
           <el-input v-model="category.name" auto-complete="off" />
         </el-form-item>
-        <el-form-item  label="数量" label-width="100px" prop="num">
+        <el-form-item  label="序号" label-width="100px" prop="num">
           <!-- <el-input type="number" v-model.number="category.num" auto-complete="off" /> -->
           <el-input type="number" v-model.number="category.num" auto-complete="off"></el-input>
         </el-form-item>
@@ -64,7 +65,9 @@
   </div>
 </template>
 <script>
+
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -89,7 +92,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('category', ['categorys', 'visible', 'title', 'loading']),
+    ...mapState('category', ['categories', 'visible', 'title', 'loading']),
     ...mapGetters('category', ['orderCategory', 'categorySize'])
   },
   created() {
@@ -124,6 +127,7 @@ export default {
     },
     // 提交保存或修改方法
     submitHandler() {
+      console.log('category2',this.category);
       // 校验
       // $refs去访问已经定义的ref实例，
       //validate是源于jQuery里的验证方法，参数是一个回调函数，回调函数第一个参数为是否校验成功，第二个为校验不通过的对象
@@ -131,6 +135,7 @@ export default {
         // 如果校验通过
         if (valid) {
           // 执行异步操作返回一个promise
+          console.log('category',this.category);
           const promise = this.saveOrUpdateCategory(this.category)
           promise.then((response) => {
             // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
