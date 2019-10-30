@@ -29,7 +29,11 @@
         <el-table-column prop="id" label="编号" />
         <el-table-column prop="name" label="栏目" />
         <el-table-column prop="num" label="数量" />
-        <el-table-column prop="icon" label="图标" />
+        <el-table-column prop="icon" label="图标" >
+          <template #default="record">
+            <img :src="record.row.icon" alt="">
+          </template>
+        </el-table-column>
         <el-table-column prop="parentId" label="父栏目" />
         <el-table-column label="操作">
           <template #default="record">
