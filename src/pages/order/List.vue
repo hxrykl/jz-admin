@@ -17,8 +17,53 @@
       </el-col>
       
     </el-row>
-    <!--  -->
+    <!-- 订单分类 -->
     <el-tabs v-model="activeName">
+      <!-- 全部订单开始 -->
+      <el-tab-pane label="全部订单" name="all">
+        <div v-loading="loading">
+            <el-table :data="orders" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
+      <!-- 全部订单结束 -->
+      <!-- 代付款订单开始 -->
+      <el-tab-pane label="待付款" name="dfk">
+        <div v-loading="loading">
+            <el-table :data="ordersdfk" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
+      <!-- 代付款订单结束 -->
+      <!-- 待派单订单开始 -->
       <el-tab-pane label="待派单" name="dp">
           <div v-loading="loading">
             <el-table :data="ordersdp" size="mini" @selection-change="handleSelectionChange">
@@ -39,6 +84,8 @@
             </el-table>
           </div>
       </el-tab-pane>
+      <!-- 待派订单结束 -->
+      <!-- 待接订单开始 -->
       <el-tab-pane label="待接单" name="dj">
         <div v-loading="loading">
             <el-table :data="ordersdj" size="mini" @selection-change="handleSelectionChange">
@@ -59,6 +106,8 @@
             </el-table>
           </div>
       </el-tab-pane>
+      <!-- 待接订单结束 -->
+      <!-- 未服务订单开始 -->
       <el-tab-pane label="未服务" name="df">
         <div v-loading="loading">
             <el-table :data="ordersdf" size="mini" @selection-change="handleSelectionChange">
@@ -79,6 +128,8 @@
             </el-table>
           </div>
       </el-tab-pane>
+      <!-- 未服务订单结束 -->
+      <!-- 待评价订单开始 -->
       <el-tab-pane label="待评价" name="wp">
         <div v-loading="loading">
             <el-table :data="orderswp" size="mini" @selection-change="handleSelectionChange">
@@ -99,26 +150,30 @@
             </el-table>
           </div>
       </el-tab-pane>
+      <!-- 待评价订单结束 -->
+      <!-- 已完成订单开始 -->
+      <el-tab-pane label="已完成" name="yw">
+        <div v-loading="loading">
+            <el-table :data="ordersyw" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
     </el-tabs>
-    <!-- 表格 -->
-    <!-- <div v-loading="loading">
-      <el-table :data="orders" size="mini" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="编号" />
-        <el-table-column prop="customerId" label="顾客" />
-        <el-table-column prop="total" label="订单数量" />
-        <el-table-column prop="orderTime" label="下单时间" />
-        <el-table-column prop="addressId" label="地址" />
-        <el-table-column prop="status" label="状态" />
-        <el-table-column label="操作">
-          <template #default="record">
-            <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
-            <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
-            <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div> -->
+    <!-- 已完成订单结束 -->
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
       <el-form ref="orderForm" :model="order" :rules="rules">
@@ -142,7 +197,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      activeName:'dp',
+      activeName:'all',
       searchInput:'',
       order: {},
       ids: [],
@@ -158,7 +213,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('order', ['orders','ordersdp','ordersdj','ordersdf','orderswp', 'visible', 'title', 'loading']),
+    ...mapState('order', ['orders','ordersdfk','ordersdp','ordersdj','ordersdf','orderswp','ordersyw', 'visible', 'title', 'loading']),
     ...mapGetters('order', ['orderOrder', 'orderSize'])
   },
   created() {
@@ -176,7 +231,7 @@ export default {
       // this.$router.push("/orderDetails")
       this.$router.push({
         path: '/order/details',
-        query: { id: order.id }
+        query: { order: order }
       })
     },
     handleSelectionChange(val) {

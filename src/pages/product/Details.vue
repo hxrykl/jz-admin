@@ -4,7 +4,7 @@
     <el-button size="small" type="text" @click="backHandler">返回</el-button>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="info">
-        基本信息...
+        基本信息
       </el-tab-pane>
       <el-tab-pane label="订单信息" name="orders">
         订单信息...
@@ -22,7 +22,9 @@
   </div>
 </template>
 <script>
+
 import { mapState, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -30,7 +32,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route)
+    console.log("id",this.$route.query.id);
     const id = this.$route.query.id
     // 通过id查询产品，订单，地址
     this.findAddressByProductId(id)
@@ -42,6 +44,7 @@ export default {
     ...mapActions('address', ['findAddressByProductId']),
     backHandler() {
       // this.$router.push("/product")
+      //返回上一级
       this.$router.go(-1)
     }
   }

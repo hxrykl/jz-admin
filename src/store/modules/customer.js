@@ -69,6 +69,7 @@ export default {
       setTimeout(()=>{
         commit("endLoading")
       },1000)
+      return response.data;
     },
     // payload 顾客信息
     async saveOrUpdateCustomer({commit,dispatch},payload){

@@ -4,7 +4,10 @@ import {post,post_array} from '@/utils/request'
 export default {
   namespaced:true,
   state:{
+    // 全部订单
     orders:[],
+    // 待付款
+    ordersdfk:[],
     // 待派单
     ordersdp:[],
     // 待接单
@@ -13,6 +16,9 @@ export default {
     ordersdf:[],
     // 未评价
     orderswp:[],
+    // 已完成
+    ordersyw:[],
+    // 模态框的显示与隐藏
     visible:false,
     title:"添加订单信息",
     loading:false,
@@ -45,8 +51,13 @@ export default {
     },
     // 刷新订单，及订单分类方法
     refreshOrders(state,orders){
+
       state.orders = orders;
+
       orders.map((item,index)=>{
+        if(item.status == '待付款'){
+          state.ordersdfk[index] = item;
+        }
         if(item.status == '待派单'){
           state.ordersdp[index] = item;
         }
@@ -59,8 +70,12 @@ export default {
         if(item.status == '待评价'){
           state.orderswp[index] = item;
         }
-        console.log("item",item.status,index);
+        if(item.status == '已完成'){
+          state.ordersyw[index] = item;
+        }
+        
       });
+      console.log("item",state.ordersyw);
     },
     setTitle(state,title){
       state.title = title;
@@ -92,9 +107,10 @@ export default {
       let response = await request.get("/order/findAll");
       // 2. 将查询结果更新到state中
       commit("refreshOrders",response.data);
+      // 延时提交
       setTimeout(()=>{
         commit("endLoading")
-      },1000)
+      },10)
     },
     // payload 订单信息
     async saveOrUpdateOrder({commit,dispatch},payload){

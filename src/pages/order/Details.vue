@@ -1,13 +1,15 @@
 <template>
   <div class="orderDetails">
-    <h2>顾客详情</h2>
+    <h2>订单详情</h2>
     <el-button size="small" type="text" @click="backHandler">返回</el-button>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="info">
-          基本信息...
-      </el-tab-pane>
-      <el-tab-pane label="订单信息" name="orders">
-        订单信息...
+        <p>顾客姓名：{{customer[0].realname}}</p>
+        <p>服务员姓名：{{order.waiterId}}</p>
+        <p>下单时间：{{order.orderTime}}</p>
+        <p>数量：{{order.total}}</p>
+        <p>状态：{{order.status}}</p>
+        <p>备注：{{order.remark}}</p>
       </el-tab-pane>
       <el-tab-pane label="服务地址" name="address">
         <el-table :data="address">
@@ -22,26 +24,41 @@
   </div>
 </template>
 <script>
+
 import {mapState,mapActions} from 'vuex'
+import customer from '../../store/modules/customer';
+
 export default {
   data(){
     return {
+      order:{},
+      customer:[],
       activeName:"info"
     }
   },
+  // vue实例化完成
   created(){
-    console.log(this.$route);
-    let id = this.$route.query.id;
-    // 通过id查询顾客，订单，地址
-    // this.findAddressByOrderId(id);
+    // this.$route访问路由器
+    this.order = this.$route.query.order;
+    // 查找顾客名方法
+    this.findAllCustomers()
+    .then((customers)=>{
+      this.customer = customers.filter((item,index)=>{
+        return this.order.customerId === item.id;
+      })
+    })
+    // 查找服务员名方法
+    
   },
   computed:{
     ...mapState("address",["address"])
   },
   methods:{
     ...mapActions("address",["findAddressByOrderId"]),
+    ...mapActions("customer",["findAllCustomers"]),
     backHandler(){
       // this.$router.push("/order")
+      // 返回上一级
       this.$router.go(-1)
     }
   }
