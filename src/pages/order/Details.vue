@@ -4,8 +4,8 @@
     <el-button size="small" type="text" @click="backHandler">返回</el-button>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="info">
-        <p>顾客姓名：{{customer[0].realname}}</p>
-        <p>服务员姓名：{{order.waiterId}}</p>
+        <!-- <p>顾客姓名：{{customer[0].realname}}</p>
+        <p>服务员姓名：{{waiter[0].realname}}</p> -->
         <p>下单时间：{{order.orderTime}}</p>
         <p>数量：{{order.total}}</p>
         <p>状态：{{order.status}}</p>
@@ -33,6 +33,7 @@ export default {
     return {
       order:{},
       customer:[],
+      waiter:[],
       activeName:"info"
     }
   },
@@ -46,9 +47,14 @@ export default {
       this.customer = customers.filter((item,index)=>{
         return this.order.customerId === item.id;
       })
-    })
+    });
     // 查找服务员名方法
-    
+    this.findAllWaiters()
+    .then((waiters)=>{
+      this.waiter = waiters.filter((item,index)=>{
+        return this.order.waiterId === item.id;
+      })
+    })
   },
   computed:{
     ...mapState("address",["address"])
@@ -56,6 +62,7 @@ export default {
   methods:{
     ...mapActions("address",["findAddressByOrderId"]),
     ...mapActions("customer",["findAllCustomers"]),
+    ...mapActions("waiter",["findAllWaiters"]),
     backHandler(){
       // this.$router.push("/order")
       // 返回上一级

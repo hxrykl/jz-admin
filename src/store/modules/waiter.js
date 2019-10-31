@@ -57,6 +57,8 @@ export default {
       let response = await request.get("/waiter/findAll");
       // 2. 将查询结果更新到state中
       context.commit("refreshWaiters",response.data);
+
+      return response.data;
     },
     // payload 顾客信息
     async saveOrUpdateWaiter({commit,dispatch},payload){

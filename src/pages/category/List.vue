@@ -31,7 +31,7 @@
         <el-table-column prop="num" label="数量" />
         <el-table-column prop="icon" label="图标" >
           <template #default="record">
-            <img :src="record.row.icon" alt="">
+            <img style="width:30%;" :src="record.row.icon" alt="">
           </template>
         </el-table-column>
         <el-table-column prop="parentId" label="父栏目" />
@@ -59,6 +59,20 @@
         <el-form-item  label="父栏目" label-width="100px" prop="parentId">
           <el-input  v-model.number="category.parentId" auto-complete="off" />
         </el-form-item>
+        <el-form-item  label="图标" label-width="100px" prop="icon">
+          <!--  -->
+          <el-upload
+            class="upload-demo"
+            action="http://134.175.154.93:6677/file/upload"
+            :on-success="uploadSuccessHandler"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="closeModal">取 消</el-button>
@@ -75,6 +89,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      fileList:[],
       searchInput:'',
       category: {},
       ids: [],
@@ -117,6 +132,29 @@ export default {
     //     query: { id: category.id }
     //   })
     // },
+    // 上传图片的方法
+    uploadSuccessHandler(response, file, fileList) {
+      console.log(response);
+      // 获取上传图片的id
+      if (response.status === 200) {
+        const id = response.data.id
+        const groupname = response.data.groupname
+        // 你们上传的图片都在老师的服务器中
+        const icon = 'http://134.175.154.93:8888/' + groupname + '/' + id
+        // 将图片绑定到双向数据绑定的那个对象中
+        this.category.icon = icon
+        // 强制改变product引用地址，引起监听器注意
+        this.category = Object.assign({}, this.category)
+      } else {
+        this.$message.error('上传接口异常')
+      }
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
     handleSelectionChange(val) {
       this.ids = val.map(item => item.id)
     },
@@ -126,6 +164,7 @@ export default {
     toAddHandler() {
       // 1. 重置表单
       this.category = {}
+      this.fileList = []
       this.setTitle('添加栏目信息')
       // 2. 显示模态框
       this.showModal()
@@ -155,11 +194,14 @@ export default {
     dialogCloseHandler() {
       this.closeModal();
       // 对该表单项进行重置，将其值重置为初始值并移除校验结果
-      this.$refs.categoryForm.resetFields()
+      // this.$refs.categoryForm.resetFields()
     },
     // 修改方法
     editHandler(row) {
       this.category = row
+      this.fileList = []
+      console.log("icon",row.icon);
+      this.fileList.push({name:'原图',url:row.icon})
       // 设置模态框标题为。。
       this.setTitle('修改栏目信息')
       this.showModal()
