@@ -5,6 +5,14 @@ export default {
   namespaced:true,
   state:{
     orders:[],
+    // 待派单
+    ordersdp:[],
+    // 待接单
+    ordersdj:[],
+    // 待服务
+    ordersdf:[],
+    // 未评价
+    orderswp:[],
     visible:false,
     title:"添加订单信息",
     loading:false,
@@ -27,14 +35,32 @@ export default {
     }
   },
   mutations:{
+    
+
     showModal(state){
       state.visible = true;
     },
     closeModal(state){
       state.visible = false;
     },
+    // 刷新订单，及订单分类方法
     refreshOrders(state,orders){
       state.orders = orders;
+      orders.map((item,index)=>{
+        if(item.status == '待派单'){
+          state.ordersdp[index] = item;
+        }
+        if(item.status == '待接单'){
+          state.ordersdj[index] = item;
+        }
+        if(item.status == '待服务'){
+          state.ordersdf[index] = item;
+        }
+        if(item.status == '待评价'){
+          state.orderswp[index] = item;
+        }
+        console.log("item",item.status,index);
+      });
     },
     setTitle(state,title){
       state.title = title;

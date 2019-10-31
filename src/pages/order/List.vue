@@ -17,8 +17,91 @@
       </el-col>
       
     </el-row>
+    <!--  -->
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="待派单" name="dp">
+          <div v-loading="loading">
+            <el-table :data="ordersdp" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
+      <el-tab-pane label="待接单" name="dj">
+        <div v-loading="loading">
+            <el-table :data="ordersdj" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
+      <el-tab-pane label="未服务" name="df">
+        <div v-loading="loading">
+            <el-table :data="ordersdf" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
+      <el-tab-pane label="待评价" name="wp">
+        <div v-loading="loading">
+            <el-table :data="orderswp" size="mini" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="id" label="编号" />
+              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="total" label="订单数量" />
+              <el-table-column prop="orderTime" label="下单时间" />
+              <el-table-column prop="addressId" label="地址" />
+              <el-table-column prop="status" label="状态" />
+              <el-table-column label="操作">
+                <template #default="record">
+                  <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
+                  <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp;
+                  <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+      </el-tab-pane>
+    </el-tabs>
     <!-- 表格 -->
-    <div v-loading="loading">
+    <!-- <div v-loading="loading">
       <el-table :data="orders" size="mini" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="编号" />
@@ -35,7 +118,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
+    </div> -->
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
       <el-form ref="orderForm" :model="order" :rules="rules">
@@ -59,6 +142,8 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      activeName:'dp',
+      searchInput:'',
       order: {},
       ids: [],
       rules: {
@@ -73,7 +158,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('order', ['orders', 'visible', 'title', 'loading']),
+    ...mapState('order', ['orders','ordersdp','ordersdj','ordersdf','orderswp', 'visible', 'title', 'loading']),
     ...mapGetters('order', ['orderOrder', 'orderSize'])
   },
   created() {
@@ -82,6 +167,9 @@ export default {
   methods: {
     ...mapMutations('order', ['showModal', 'closeModal', 'setTitle']),
     ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder']),
+    toSearch() {
+      alert(1);
+    },
     // 普通方法
     toDetailsHandler(order) {
       // 跳转到详情页面
