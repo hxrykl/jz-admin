@@ -7,19 +7,9 @@ export default {
   state:{
     // 全部订单
     orders:[],
-    // // 待付款
-    // ordersdfk:[],
-    // // 待派单
-    // ordersdp:[],
-    // // 待接单
-    // ordersdj:[],
-    // // 待服务
-    // ordersdf:[],
-    // // 未评价
-    // orderswp:[],
-    // // 已完成
-    // ordersyw:[],
-    // 模态框的显示与隐藏
+    // 派单模态框的显示与隐藏
+    pdVisible:false,
+    // 修改模态框的显示与隐藏
     visible:false,
     title:"添加订单信息",
     loading:false,
@@ -50,6 +40,14 @@ export default {
     }
   },
   mutations:{
+    // 将派单模态框显示
+    showSendOrder(state) {
+      state.pdVisible = true
+    },
+    // 将派单模态框隐藏
+    closeSendOrder(state) {
+      state.pdVisible = false
+    },
     // 将模态框的状态改为打开
     showModal(state){
       state.visible = true;
@@ -61,6 +59,10 @@ export default {
     // 提交新的订单数据
     refreshOrders(state,orders){
       state.orders = orders;
+      // 时间戳处理
+      state.orders.forEach((item)=>{
+        item.orderTime = moment(item.orderTime).format('YYYY-MM-DD HH:mm:ss') 
+      })
     },
     setTitle(state,title){
       state.title = title;
