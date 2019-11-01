@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import {post,post_array} from '@/utils/request'
+import {get,post,post_array} from '@/utils/request'
 import moment from 'moment'
 
 export default {
@@ -61,7 +61,7 @@ export default {
       state.orders = orders;
       // 时间戳处理
       state.orders.forEach((item)=>{
-        item.orderTime = moment(item.orderTime).format('YYYY-MM-DD HH:mm:ss') 
+        item.orderTime = moment(item.orderTime).format('YYYY-MM-DD HH:mm:ss');
       })
     },
     setTitle(state,title){
@@ -75,6 +75,14 @@ export default {
     }
   },
   actions:{
+    // 派单方法
+    async sendOrder(context,wno) {
+      // console.log("提交信息",wno.waiterId,wno.orderId);
+      let response = await get('/order/sendOrder?waiterId='+wno.waiterId+"&orderId="+wno.orderId);
+      context.dispatch('findAllOrders');
+      return response;
+    },
+    // 批量删除订单方法
     async batchDeleteOrder(context,ids){
       // 1. 批量删除
       let response = await post_array("/order/batchDelete",{ids})
@@ -88,6 +96,7 @@ export default {
       context.dispatch("findAllOrders");
       return response;
     },
+    // 查询全部订单方法
     async findAllOrders({dispatch,commit}){
       // 1. ajax查询
       commit("beginLoading");

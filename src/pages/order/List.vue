@@ -78,7 +78,7 @@
                 <template #default="record">
                   <!-- <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)" /> &nbsp;
                   <i class="el-icon-edit-outline" href="" @click.prevent="editHandler(record.row)" /> &nbsp; -->
-                  <a href="" @click.prevent="toSendOrder(record.row.customerId)">派单</a>
+                  <a href="" @click.prevent="toSendOrder(record.row)">派单</a>
                   <a href="" @click.prevent="toDetailsHandler(record.row)">详情</a>
                 </template>
               </el-table-column>
@@ -196,18 +196,19 @@
       title="派单"
       :visible="pdVisible"
       width="30%"
-      @close="pCloseHandler">
+      :model="order"
+      @close="pCloseHandler">yg{{value}}hang{{order.id}}
       <el-select v-model="value" placeholder="请选择">
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in waiters"
+          :key="item.id"
+          :label="item.realname"
+          :value="item.id">
         </el-option>
       </el-select>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeSendOrder">取 消</el-button>
-        <el-button type="primary" @click="toSubmitSendOrder">确 定</el-button>
+        <el-button type="primary" @click="toSubmitSendOrder(value,order.id)">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 派单模态框结束 -->
@@ -220,12 +221,12 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      // 单选
-      options:[{value:1,lable:1},{value:2,lable:2},{value:3,lable:3}],
-      // 
+      // 员工
+      // options:[{value:1,lable:1},{value:2,lable:2},{value:3,lable:3}],
+      // 单选员工
       value:'',
       // 初始选择显示那个表格
-      activeName:'all',
+      activeName:'待派单',
       // 搜索框的值
       searchInput:'',
       // 模态框的值
@@ -244,25 +245,33 @@ export default {
   },
   computed: {
     ...mapState('order', ['orders', 'visible', 'title', 'loading','pdVisible']),
+    ...mapState('waiter',['waiters']),
     ...mapGetters('order', ['orderOrder', 'orderSize','filterOrderStatus'])
   },
   created() {
     // 查询全部订单
     this.findAllOrders()
+    // 查询全部员工
+    this.findAllWaiters()
   },
   methods: {
     ...mapMutations('order', ['showModal', 'closeModal', 'setTitle','showSendOrder','closeSendOrder']),
-    ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder']),
+    ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder','sendOrder']),
+    ...mapActions('waiter',['findAllWaiters']),
     toSearch() {
       alert(1);
     },
     // 提交派单方法
-    toSubmitSendOrder() {
+    toSubmitSendOrder(waiterId,orderId) {
       this.closeSendOrder();
+      this.sendOrder({waiterId,orderId});
+      // console.log("发送的数据",{waiterId,orderId});
     },
     // 派单显示模态框方法
-    toSendOrder(customerId) {
+    toSendOrder(row) {
+      this.order = row;
       this.showSendOrder();
+      console.log("order",this.order);
     },
     // 普通方法
     toDetailsHandler(order) {

@@ -73,6 +73,7 @@ export function get (url, params) {
 
 // 自定义post
 export function post(url, data) {
+  // qs.stringify(data)将对象 序列化成URL的形式，以&进行拼接
   return service.post(url, qs.stringify(data),
     {
       timeout: 10000,

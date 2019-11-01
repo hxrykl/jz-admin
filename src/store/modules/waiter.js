@@ -39,6 +39,7 @@ export default {
     }
   },
   actions:{
+    // 批量删除员工方法
     async batchDeleteWaiter(context,ids){
       // 1. 批量删除
       let response = await request.post("/waiter/batchDelete",{ids})
@@ -47,11 +48,13 @@ export default {
       // 3. 返回结果
       return response;
     },
+    // 通过员工Id删除员工方法
     async deleteWaiterById(context,id){
       let response = await request.get("/waiter/deleteById?id="+id);
       context.dispatch("findAllWaiters");
       return response;
     },
+    // 查询全部员工方法
     async findAllWaiters(context){
       // 1. ajax查询
       let response = await request.get("/waiter/findAll");
