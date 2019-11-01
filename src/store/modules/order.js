@@ -1,23 +1,24 @@
 import request from '@/utils/request'
 import {post,post_array} from '@/utils/request'
+import moment from 'moment'
 
 export default {
   namespaced:true,
   state:{
     // 全部订单
     orders:[],
-    // 待付款
-    ordersdfk:[],
-    // 待派单
-    ordersdp:[],
-    // 待接单
-    ordersdj:[],
-    // 待服务
-    ordersdf:[],
-    // 未评价
-    orderswp:[],
-    // 已完成
-    ordersyw:[],
+    // // 待付款
+    // ordersdfk:[],
+    // // 待派单
+    // ordersdp:[],
+    // // 待接单
+    // ordersdj:[],
+    // // 待服务
+    // ordersdf:[],
+    // // 未评价
+    // orderswp:[],
+    // // 已完成
+    // ordersyw:[],
     // 模态框的显示与隐藏
     visible:false,
     title:"添加订单信息",
@@ -38,44 +39,28 @@ export default {
         })
         return state.orders;
       }
+    },
+    // 遍历全部订单，返回想要的值
+    filterOrderStatus(state,status) {
+      return (status)=>{
+        return state.orders.filter((item)=>{
+          return item.status === status;
+        })
+      }
     }
   },
   mutations:{
-    
-
+    // 将模态框的状态改为打开
     showModal(state){
       state.visible = true;
     },
+    // 将模态框的状态改为关闭
     closeModal(state){
       state.visible = false;
     },
-    // 刷新订单，及订单分类方法
+    // 提交新的订单数据
     refreshOrders(state,orders){
-
       state.orders = orders;
-
-      orders.map((item,index)=>{
-        if(item.status == '待付款'){
-          state.ordersdfk[index] = item;
-        }
-        if(item.status == '待派单'){
-          state.ordersdp[index] = item;
-        }
-        if(item.status == '待接单'){
-          state.ordersdj[index] = item;
-        }
-        if(item.status == '待服务'){
-          state.ordersdf[index] = item;
-        }
-        if(item.status == '待评价'){
-          state.orderswp[index] = item;
-        }
-        if(item.status == '已完成'){
-          state.ordersyw[index] = item;
-        }
-        
-      });
-      console.log("item",state.ordersyw);
     },
     setTitle(state,title){
       state.title = title;

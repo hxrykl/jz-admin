@@ -50,7 +50,7 @@ export default {
         return this.order.customerId === item.id;
       })
     });
-    alert(1)
+    // alert(1)
     // 查找服务员名方法
     this.findAllWaiters()
     .then((waiters)=>{

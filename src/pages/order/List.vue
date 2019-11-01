@@ -42,9 +42,9 @@
       </el-tab-pane>
       <!-- 全部订单结束 -->
       <!-- 代付款订单开始 -->
-      <el-tab-pane label="待付款" name="dfk">
+      <el-tab-pane label="待付款" name="待付款">
         <div v-loading="loading">
-            <el-table :data="ordersdfk" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -64,9 +64,9 @@
       </el-tab-pane>
       <!-- 代付款订单结束 -->
       <!-- 待派单订单开始 -->
-      <el-tab-pane label="待派单" name="dp">
+      <el-tab-pane label="待派单" name="待派单">
           <div v-loading="loading">
-            <el-table :data="ordersdp" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -86,9 +86,9 @@
       </el-tab-pane>
       <!-- 待派订单结束 -->
       <!-- 待接订单开始 -->
-      <el-tab-pane label="待接单" name="dj">
+      <el-tab-pane label="待接单" name="待接单">
         <div v-loading="loading">
-            <el-table :data="ordersdj" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -108,9 +108,9 @@
       </el-tab-pane>
       <!-- 待接订单结束 -->
       <!-- 未服务订单开始 -->
-      <el-tab-pane label="未服务" name="df">
+      <el-tab-pane label="待服务" name="待服务">
         <div v-loading="loading">
-            <el-table :data="ordersdf" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -130,9 +130,9 @@
       </el-tab-pane>
       <!-- 未服务订单结束 -->
       <!-- 待评价订单开始 -->
-      <el-tab-pane label="待评价" name="wp">
+      <el-tab-pane label="待评价" name="待评价">
         <div v-loading="loading">
-            <el-table :data="orderswp" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -152,9 +152,9 @@
       </el-tab-pane>
       <!-- 待评价订单结束 -->
       <!-- 已完成订单开始 -->
-      <el-tab-pane label="已完成" name="yw">
+      <el-tab-pane label="已完成" name="已完成">
         <div v-loading="loading">
-            <el-table :data="ordersyw" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -175,7 +175,7 @@
     </el-tabs>
     <!-- 已完成订单结束 -->
     <!-- 模态框 -->
-    <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
+    <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
       <el-form ref="orderForm" :model="order" :rules="rules">
         <el-form-item label="顾客" label-width="100px" prop="customerId">
           <el-input v-model="order.customerId" auto-complete="off" />
@@ -199,8 +199,11 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      // 初始选择显示那个表格
       activeName:'all',
+      // 搜索框的值
       searchInput:'',
+      // 模态框的值
       order: {},
       ids: [],
       rules: {
@@ -215,8 +218,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('order', ['orders','ordersdfk','ordersdp','ordersdj','ordersdf','orderswp','ordersyw', 'visible', 'title', 'loading']),
-    ...mapGetters('order', ['orderOrder', 'orderSize'])
+    ...mapState('order', ['orders', 'visible', 'title', 'loading']),
+    ...mapGetters('order', ['orderOrder', 'orderSize','filterOrderStatus'])
   },
   created() {
     this.findAllOrders()
@@ -262,7 +265,8 @@ export default {
       })
     },
     dialogCloseHandler() {
-      this.$refs.orderForm.resetFields()
+      this.closeModal();
+      // this.$refs.orderForm.resetFields()
     },
     editHandler(row) {
       this.order = row
