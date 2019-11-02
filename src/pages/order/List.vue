@@ -22,7 +22,7 @@
       <!-- 全部订单开始 -->
       <el-tab-pane label="全部订单" name="all">
         <div v-loading="loading">
-            <el-table :data="orders" size="mini" @selection-change="handleSelectionChange">
+            <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
               <el-table-column prop="customerId" label="顾客" />
@@ -174,6 +174,18 @@
           </div>
       </el-tab-pane>
     </el-tabs>
+    <!-- 分页开始 -->
+    <div class="block">
+      <!-- page-size当前页显示数，current-page当前页数, current-change:当currentPage 改变时会触发 -->
+      <el-pagination
+        layout="prev, pager, next"
+        :page-size="pageSize"
+        :current-page="currentPages+1"
+        @current-change="changeCurrent"
+        :total="orders.length">
+      </el-pagination>
+    </div>
+    <!-- 分页结束 -->
     <!-- 已完成订单结束 -->
     <!-- 修改模态框 -->
     <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
@@ -221,12 +233,10 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      // 员工
-      // options:[{value:1,lable:1},{value:2,lable:2},{value:3,lable:3}],
       // 单选员工
       value:'',
       // 初始选择显示那个表格
-      activeName:'待派单',
+      activeName:'all',
       // 搜索框的值
       searchInput:'',
       // 模态框的值
@@ -244,7 +254,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('order', ['orders', 'visible', 'title', 'loading','pdVisible']),
+    ...mapState('order', ['orders', 'visible', 'title', 'loading','pdVisible','pageSize','currentPages']),
     ...mapState('waiter',['waiters']),
     ...mapGetters('order', ['orderOrder', 'orderSize','filterOrderStatus'])
   },
@@ -256,7 +266,7 @@ export default {
   },
   methods: {
     ...mapMutations('order', ['showModal', 'closeModal', 'setTitle','showSendOrder','closeSendOrder']),
-    ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder','sendOrder']),
+    ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder','sendOrder',,'changeCurrent']),
     ...mapActions('waiter',['findAllWaiters']),
     toSearch() {
       alert(1);

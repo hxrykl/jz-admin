@@ -5,8 +5,14 @@ import moment from 'moment'
 export default {
   namespaced:true,
   state:{
+    // 当前页数
+    currentPages:0,
+    // 当前页显示多少数据
+    pageSize:5,
     // 全部订单
     orders:[],
+    // 分页订单
+    pageOrder:[],
     // 派单模态框的显示与隐藏
     pdVisible:false,
     // 修改模态框的显示与隐藏
@@ -16,9 +22,15 @@ export default {
     loading:false,
   },
   getters:{
+    
+    // 分页显示方法
+    pageShowOrder() {
+      alert(1);
+    },
     orderSize(state){
       return state.orders.length;
     },
+    // 订单排序方法
     orderOrder:(state)=>{
       return function(flag){
         state.orders.sort((a,b)=>{
@@ -31,16 +43,34 @@ export default {
         return state.orders;
       }
     },
-    // 遍历全部订单，返回想要的值
-    filterOrderStatus(state,status) {
+    // 遍历全部订单，返回不同状态订单 ??
+    filterOrderStatus(state) {
       return (status)=>{
-        return state.orders.filter((item)=>{
-          return item.status === status;
-        })
+        console.log("状态：",status);
+        function page(){
+
+        }
+        if(status === 'all'){
+          return state.orders;
+        }else{
+          let a = state.orders.filter((item)=>{
+            return item.status === status;
+          })
+          return a;
+        }
       }
+      
+        // console.log("状态：",status);
+        // return state.orders.filter((item)=>{
+        //   return item.status === status;
+        // })
+      
     }
   },
   mutations:{
+    changeCurrent(state,currentPage) {
+      state.currentPages = currentPage - 1;
+    },
     // 将派单模态框显示
     showSendOrder(state) {
       state.pdVisible = true
