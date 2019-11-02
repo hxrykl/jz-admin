@@ -5,14 +5,14 @@ import moment from 'moment'
 export default {
   namespaced:true,
   state:{
-    // 当前页数
-    currentPages:0,
-    // 当前页显示多少数据
-    pageSize:5,
     // 全部订单
     orders:[],
-    // 分页订单
-    pageOrder:[],
+    // 全部页数
+    pages:1,
+    // 当前页数
+    currentPages:1,
+    // 当前页显示多少数据
+    pageSize:5,
     // 派单模态框的显示与隐藏
     pdVisible:false,
     // 修改模态框的显示与隐藏
@@ -46,17 +46,23 @@ export default {
     // 遍历全部订单，返回不同状态订单 ??
     filterOrderStatus(state) {
       return (status)=>{
-        console.log("状态：",status);
-        function page(){
-
+        // console.log("状态：",status);
+        // console.log("当前页数",state.currentPages,"显示几条",state.pageSize);
+        function page(totals){
+          let d = state.currentPages*state.pageSize;
+          return totals.filter((item,index)=>{
+            return index>=d-5 && index<d
+          })
         }
         if(status === 'all'){
-          return state.orders;
+          // changePages(state,state.orders.length)
+          return page(state.orders);
         }else{
           let a = state.orders.filter((item)=>{
             return item.status === status;
           })
-          return a;
+          // changePages(state,a.length)
+          return page(a);
         }
       }
       
@@ -68,8 +74,13 @@ export default {
     }
   },
   mutations:{
+    // 改变分页页数
+    changePages(state,pages) {
+      state.pages = pages
+    },
+    // 改变分页显示方法
     changeCurrent(state,currentPage) {
-      state.currentPages = currentPage - 1;
+      state.currentPages = currentPage;
     },
     // 将派单模态框显示
     showSendOrder(state) {

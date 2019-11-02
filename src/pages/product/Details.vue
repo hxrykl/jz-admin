@@ -34,6 +34,9 @@ export default {
       activeName: 'info'
     }
   },
+  computed: {
+    ...mapState('address', ['address'])
+  },
   created() {
     // 拿到产品id
     const id = this.$route.query.id
@@ -44,9 +47,6 @@ export default {
       .then((product) => {
         this.product = product
       })
-  },
-  computed: {
-    ...mapState('address', ['address'])
   },
   methods: {
     ...mapActions('product', ['findProductById']),

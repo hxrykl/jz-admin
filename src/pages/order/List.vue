@@ -173,20 +173,21 @@
             </el-table>
           </div>
       </el-tab-pane>
+      <!-- 已完成订单结束 -->
     </el-tabs>
+    <!-- 订单分类结束 -->
     <!-- 分页开始 -->
     <div class="block">
       <!-- page-size当前页显示数，current-page当前页数, current-change:当currentPage 改变时会触发 -->
       <el-pagination
         layout="prev, pager, next"
         :page-size="pageSize"
-        :current-page="currentPages+1"
+        :current-page="currentPages"
         @current-change="changeCurrent"
         :total="orders.length">
       </el-pagination>
     </div>
     <!-- 分页结束 -->
-    <!-- 已完成订单结束 -->
     <!-- 修改模态框 -->
     <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
       <el-form ref="orderForm" :model="order" :rules="rules">
@@ -265,8 +266,8 @@ export default {
     this.findAllWaiters()
   },
   methods: {
-    ...mapMutations('order', ['showModal', 'closeModal', 'setTitle','showSendOrder','closeSendOrder']),
-    ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder','sendOrder',,'changeCurrent']),
+    ...mapMutations('order', ['showModal', 'closeModal', 'setTitle','showSendOrder','closeSendOrder','changeCurrent']),
+    ...mapActions('order', ['findAllOrders', 'saveOrUpdateOrder', 'deleteOrderById', 'batchDeleteOrder','sendOrder']),
     ...mapActions('waiter',['findAllWaiters']),
     toSearch() {
       alert(1);
@@ -349,5 +350,10 @@ export default {
 }
 </script>
 <style scoped>
-
+.block > .el-pagination {
+  text-align: center;
+}
+.el-tabs--top {
+  height: 30%;
+}
 </style>
