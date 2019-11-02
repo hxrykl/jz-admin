@@ -8,12 +8,12 @@
           <el-input
             placeholder="请输入内容"
             prefix-icon="el-icon-search"
-            v-model="searchInput"
+            v-model="customer.realname"
             size="small"
             style="display: inline-block;width: 20%;"
             clearable>
           </el-input>
-          <!-- <el-button @click="toSearch" size="small" type="primary">搜索</el-button> -->
+          <el-button @click="toSearch" size="small" type="primary">搜索</el-button>
         </div>
       </el-col>
       
@@ -26,7 +26,14 @@
         <el-table-column prop="id" label="编号"></el-table-column>
         <el-table-column prop="realname" label="姓名"></el-table-column>
         <el-table-column prop="telephone" label="手机号"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
+        <el-table-column prop="status" label="状态"><el-switch
+          v-model="value"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+          active-value="正常"
+          inactive-value="不正常"
+          @change="toChangeStatus">
+        </el-switch></el-table-column>
         <el-table-column label="操作">
           <template #default="record">
               <i class="el-icon-delete" href="" @click.prevent="deleteHandler(record.row.id)"></i> &nbsp;
@@ -62,6 +69,7 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 export default {
   data(){
     return {
+      value: '正常',
       searchInput:"",
       // 
       customer:{},
@@ -94,11 +102,16 @@ export default {
       // this.$router.push("/customerDetails")
       this.$router.push({
         path:"/customer/details",
-        query:{id:customer.id}
+        query:{id:customer.id, customer}
       })
     },
     handleSelectionChange(val) {
       this.ids = val.map(item=>item.id);
+    },
+    toChangeStatus() {
+      // value: false
+      console.log(1)
+      //if...
     },
     toAddHandler(){
       // 1. 重置表单
@@ -108,7 +121,7 @@ export default {
       this.showModal();
     },
     toSearch() {
-      alert(1);
+      this.findAllCustomers()
     },
     // 定义提交保存方法
     submitHandler(){
