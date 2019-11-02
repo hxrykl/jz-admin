@@ -1,11 +1,27 @@
 <template>
   <div class="product">
     <h2>产品管理</h2>
-    <!-- 按钮 -->
-    <div>
-      <el-button size="small" type="primary" @click="toAddHandler">添加</el-button>
-      <el-button size="small" type="danger" @click="batchDeleteHandler">批量删除</el-button>
-    </div>
+    <el-row>
+      <!-- 搜索 -->
+      <el-col :span="20">
+        <div class="grid-content bg-purple">
+          <el-input
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+            v-model="searchInput"
+            size="small"
+            style="display: inline-block;width: 20%;"
+            clearable>
+          </el-input>
+          <el-button @click="toSearch" size="small" type="primary">搜索</el-button>
+        </div>
+      </el-col>
+      <!-- 添加/删除 -->
+      <el-col :span="4">
+            <el-button size="small" type="primary" @click="toAddHandler">添加</el-button>
+            <el-button size="small" type="danger" @click="batchDeleteHandler">批量删除</el-button>
+      </el-col>
+    </el-row>
     <!-- 表格 -->
     <div>
       <el-table :data="products.slice((currentPage-1)*pagesize,currentPage*pagesize)" size="mini" @selection-change="handleSelectionChange">
@@ -79,6 +95,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      searchInput:'',
       currentPage:1, //初始页
       pagesize:5,    //    每页的数据
       fileList: [],
@@ -112,6 +129,9 @@ export default {
     ...mapMutations('product', ['showModal', 'closeModal', 'setTitle']),
     ...mapActions('product', ['findAllProducts', 'saveOrUpdateProduct', 'deleteProductById', 'batchDeleteProduct']),
     ...mapActions('category', ['findAllCategorys']),
+    toSearch() {
+      alert(1)
+    },
     handleSizeChange: function (size) {
             this.pagesize = size;
             console.log(this.pagesize)  //每页下拉显示数据
@@ -136,6 +156,7 @@ export default {
       }
     },
     toDetailsHandler(id) {
+      // 跳转到详情页，同时发送产品id
       this.$router.push({
         path: '/product/Details',
         query: { id }
