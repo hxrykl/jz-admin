@@ -12,6 +12,7 @@ export default {
     // 修改模态框的显示与隐藏
     visible:false,
     title:"添加订单信息",
+    // 加载样式显示
     loading:false,
   },
   getters:{
@@ -64,12 +65,15 @@ export default {
         item.orderTime = moment(item.orderTime).format('YYYY-MM-DD HH:mm:ss');
       })
     },
+    // 设置模态框地标题方法
     setTitle(state,title){
       state.title = title;
     },
+    // 加载样式显示方法
     beginLoading(state){
       state.loading = true;
     },
+    // 加载样式隐藏方法
     endLoading(state){
       state.loading = false;
     }
@@ -98,12 +102,12 @@ export default {
     },
     // 查询全部订单方法
     async findAllOrders({dispatch,commit}){
-      // 1. ajax查询
+      // 1. ajax查询，同时加载样式显示
       commit("beginLoading");
       let response = await request.get("/order/findAll");
       // 2. 将查询结果更新到state中
       commit("refreshOrders",response.data);
-      // 延时提交
+      // 延时提交，拿到结果后加载样式隐藏
       setTimeout(()=>{
         commit("endLoading")
       },10)
