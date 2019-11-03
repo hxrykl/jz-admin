@@ -19,7 +19,7 @@
     </el-row>
     <!-- 表格 -->
     <div v-loading="loading">
-      <el-table :data="waiters" size="mini" height="400" @selection-change="handleSelectionChange">
+      <el-table :data="waiters" size="mini" height="275" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="编号" />
         <el-table-column prop="realname" label="姓名" />
@@ -108,7 +108,7 @@ export default {
       // this.$router.push("/waiterDetails")
       this.$router.push({
         path: '/waiter/details',
-        query: { id: waiter.id }
+        query: { waiter: waiter }
       })
     },
     handleSelectionChange(val) {

@@ -7,9 +7,9 @@
         <div>姓名:{{customer.realname}}</div>
           <div>手机号:{{customer.telephone}}</div>
       </el-tab-pane>
-      <el-tab-pane label="订单信息" name="orders">
+      <!-- <el-tab-pane label="订单信息" name="orders">
         订单信息...
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane label="服务地址" name="address">
         <el-table :data="address">
           <el-table-column label="省" prop="province"></el-table-column>

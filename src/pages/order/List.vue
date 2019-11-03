@@ -354,6 +354,6 @@ export default {
   text-align: center;
 }
 .el-tabs--top {
-  height: 30%;
+  height: 275px;
 }
 </style>

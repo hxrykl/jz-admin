@@ -43,7 +43,7 @@ export default {
         return state.orders;
       }
     },
-    // 遍历全部订单，返回不同状态订单 ??
+    // 遍历全部订单，返回不同状态订单 ????    
     filterOrderStatus(state) {
       return (status)=>{
         // console.log("状态：",status);
@@ -55,13 +55,13 @@ export default {
           })
         }
         if(status === 'all'){
-          // changePages(state,state.orders.length)
+          // context.commit.changePages(state,state.orders.length)
           return page(state.orders);
         }else{
           let a = state.orders.filter((item)=>{
             return item.status === status;
           })
-          // changePages(state,a.length)
+          // context.commit.changePages(state,a.length)
           return page(a);
         }
       }
@@ -74,6 +74,40 @@ export default {
     }
   },
   mutations:{
+    // // 遍历全部订单，返回不同状态订单 ??
+    // filterOrderStatus(state) {
+      
+    //   return (status)=>{
+    //     alert(1)
+    //     console.log("状态：",status);
+    //     // console.log("当前页数",state.currentPages,"显示几条",state.pageSize);
+    //     // 定义选取分页数据方法
+    //     function page(totals){
+    //       let d = state.currentPages*state.pageSize;
+    //       return totals.filter((item,index)=>{
+    //         return index>=d-5 && index<d
+    //       })
+    //     }
+    //     if(status === 'all'){
+    //       state.pages = pages
+    //       // context.commit.changePages(state,state.orders.length)
+    //       return page(state.orders);
+    //     }else{
+    //       let a = state.orders.filter((item)=>{
+    //         return item.status === status;
+    //       })
+    //       // context.commit.changePages(state,a.length)
+    //       state.pages = pages
+    //       return page(a);
+    //     }
+    //   }
+      
+    //     // console.log("状态：",status);
+    //     // return state.orders.filter((item)=>{
+    //     //   return item.status === status;
+    //     // })
+      
+    // },
     // 改变分页页数
     changePages(state,pages) {
       state.pages = pages
