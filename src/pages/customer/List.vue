@@ -116,7 +116,7 @@ export default {
     toAddHandler(){
       // 1. 重置表单
       this.customer = {};
-      this.setTitle("添加顾客信息");
+      this.setTitle("添加用户信息");
       // 2. 显示模态框
       this.showModal();
     },
@@ -147,7 +147,7 @@ export default {
     },
     editHandler(row){
       this.customer = row;
-      this.setTitle("修改顾客信息");
+      this.setTitle("修改用户信息");
       this.showModal();
     },
     deleteHandler(id){

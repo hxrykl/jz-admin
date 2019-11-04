@@ -4,7 +4,7 @@
     <el-button size="small" type="text" @click="backHandler">返回</el-button>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="info">
-        <p>顾客姓名：{{customer[0].realname}}</p>
+        <p>用户姓名：{{customer[0].realname}}</p>
         <p>服务员姓名：{{waiter[0].realname}}</p>
         <p>下单时间：{{order.orderTime}}</p>
         <p>数量：{{order.total}}</p>
@@ -43,7 +43,7 @@ export default {
     
     // this.$route访问路由器
     this.order = this.$route.query.order;
-    // 查找顾客名方法
+    // 查找用户名方法
     this.findAllCustomers()
     .then((customers)=>{
       this.customer = customers.filter((item,index)=>{
@@ -58,7 +58,7 @@ export default {
         return this.order.waiterId === item.id;
       })
     })
-    // 通过顾客Id查找地址
+    // 通过用户Id查找地址
     this.findAddressByCustomerId(this.order.customerId)
     console.log(this.order.customerId,"gkid");
   },

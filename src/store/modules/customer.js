@@ -68,10 +68,10 @@ export default {
       commit("refreshCustomers",response.data);
       setTimeout(()=>{
         commit("endLoading")
-      },1000)
+      },10)
       return response.data;
     },
-    // payload 顾客信息
+    // payload 用户信息
     async saveOrUpdateCustomer({commit,dispatch},payload){
       // 1. 保存或更新
       let response = await post("/customer/saveOrUpdate",payload)

@@ -25,7 +25,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -47,7 +47,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -69,7 +69,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -92,7 +92,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -114,7 +114,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -136,7 +136,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -158,7 +158,7 @@
             <el-table :data="filterOrderStatus(activeName)" size="mini" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="id" label="编号" />
-              <el-table-column prop="customerId" label="顾客" />
+              <el-table-column prop="customerId" label="用户" />
               <el-table-column prop="total" label="订单数量" />
               <el-table-column prop="orderTime" label="下单时间" />
               <el-table-column prop="addressId" label="地址" />
@@ -191,7 +191,7 @@
     <!-- 修改模态框 -->
     <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
       <el-form ref="orderForm" :model="order" :rules="rules">
-        <el-form-item label="顾客" label-width="100px" prop="customerId">
+        <el-form-item label="用户" label-width="100px" prop="customerId">
           <el-input v-model="order.customerId" auto-complete="off" />
         </el-form-item>
         <el-form-item label="数量" label-width="100px" prop="total">

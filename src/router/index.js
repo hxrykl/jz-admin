@@ -104,13 +104,13 @@ export const asyncRoutes = [
         // 直接引入了组件
         component: () => import('@/pages/customer/List'),
         name: 'customer',
-        meta: { title: '顾客管理', icon: 'tab' }
+        meta: { title: '用户管理', icon: 'tab' }
       }, {
         path: 'details',
         hidden: true,
         component: () => import('@/pages/customer/Details'),
         name: 'details',
-        meta: { title: '顾客详情', icon: 'tab' }
+        meta: { title: '用户详情', icon: 'tab' }
       }
     ]
   }, {

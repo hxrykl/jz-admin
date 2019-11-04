@@ -41,7 +41,7 @@
       </el-table>
     </div>
     <!-- 模态框 -->
-    <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
+    <el-dialog :title="title" :visible="visible" @close="dialogCloseHandler">
       {{ product }}
       <el-form ref="productForm" :model="product" :rules="rules">
         <el-form-item label="名称" label-width="100px" prop="name">
@@ -51,9 +51,10 @@
           <el-input v-model="product.price" auto-complete="off" />
         </el-form-item>
         <el-form-item label="所属栏目" label-width="100px" prop="categoryId">
-          <el-select v-model="product.categoryId">
+          <!-- <el-select v-model="product.categoryId">
             <el-option v-for="c in categorys" :key="c.id" :label="c.name" :value="c.id" />
-          </el-select>
+          </el-select> -->
+          <el-input v-model="product.categoryId" auto-complete="off" />
         </el-form-item>
         <el-form-item label="介绍" label-width="100px">
           <el-input v-model="product.description" type="textarea" auto-complete="off" />
@@ -189,6 +190,7 @@ export default {
       })
     },
     dialogCloseHandler() {
+      this.closeModal();
       this.$refs.productForm.resetFields()
     },
     editHandler(row) {
